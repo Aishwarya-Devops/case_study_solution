@@ -1,0 +1,444 @@
+Started by GitHub push by Aishwarya-Devops
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/devops-pipeline
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] tool
+[Pipeline] tool
+[Pipeline] tool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Tool Install)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (code checkout)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Aishwarya-Devops/batch10.git # timeout=10
+Fetching upstream changes from https://github.com/Aishwarya-Devops/batch10.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.7.4'
+ > git fetch --tags --progress https://github.com/Aishwarya-Devops/batch10.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision e36c1249dbaa731acc681288c4f6b98e4e43698e (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e36c1249dbaa731acc681288c4f6b98e4e43698e # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D master # timeout=10
+ > git checkout -b master e36c1249dbaa731acc681288c4f6b98e4e43698e # timeout=10
+Commit message: "Update demo.txt"
+ > git rev-list --no-walk bb39347fa6f80a64d20e9ae790b2314bb93a286b # timeout=10
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (build_test_package)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ /opt/maven//bin/mvn clean package
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.test:my-test-app:jar:0.0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.springframework.boot:spring-boot-maven-plugin @ line 40, column 11
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------< org.test:my-test-app >------------------------
+[INFO] Building my-test-app 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.0.0:clean (default-clean) @ my-test-app ---
+[INFO] Deleting /var/lib/jenkins/workspace/devops-pipeline/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.0.1:resources (default-resources) @ my-test-app ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ my-test-app ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /var/lib/jenkins/workspace/devops-pipeline/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.0.1:testResources (default-testResources) @ my-test-app ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /var/lib/jenkins/workspace/devops-pipeline/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ my-test-app ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.21.0:test (default-test) @ my-test-app ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.0.2:jar (default-jar) @ my-test-app ---
+[INFO] Building jar: /var/lib/jenkins/workspace/devops-pipeline/target/my-test-app-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.0.3.RELEASE:repackage (default) @ my-test-app ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.0.2:unpack (unpack) @ my-test-app ---
+[INFO] Configured Artifact: org.test:my-test-app:0.0.1-SNAPSHOT:jar
+[INFO] Unpacking /var/lib/jenkins/workspace/devops-pipeline/target/my-test-app-0.0.1-SNAPSHOT.jar to /var/lib/jenkins/workspace/devops-pipeline/target/dependency with includes "" and excludes ""
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.467 s
+[INFO] Finished at: 2021-06-04T17:41:33Z
+[INFO] ------------------------------------------------------------------------
+Post stage
+[Pipeline] publishHTML
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at BUILD level /var/lib/jenkins/workspace/devops-pipeline/target to /var/lib/jenkins/jobs/devops-pipeline/builds/169/htmlreports/RCov_20Report
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (SonarQube analysis)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] withSonarQubeEnv
+Injecting SonarQube environment variables using the configuration: SonarQube
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] sh
++ /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner -Dsonar.projectKey=test-node-js -Dsonar.sources=. -Dsonar.css.node=. -Dsonar.host.url=http://35.235.81.148:9000 -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.java.binaries=./target/classes
+INFO: Scanner configuration file: /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: SonarScanner 4.6.2.2472
+INFO: Java 1.8.0_292 Private Build (64-bit)
+INFO: Linux 4.15.0-1098-gcp amd64
+INFO: User cache: /var/lib/jenkins/.sonar/cache
+INFO: Scanner configuration file: /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: Analyzing on SonarQube server 8.9.0
+INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
+WARN: SonarScanner will require Java 11 to run, starting in SonarQube 9.x
+INFO: Load global settings
+INFO: Load global settings (done) | time=266ms
+INFO: Server id: BF41A1F2-AXnXMmlEj5N-6DNPe0uE
+INFO: User cache: /var/lib/jenkins/.sonar/cache
+INFO: Load/download plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=219ms
+INFO: Load/download plugins (done) | time=281ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=16ms
+INFO: Execute project builders
+INFO: Execute project builders (done) | time=3ms
+INFO: Project key: test-node-js
+INFO: Base dir: /var/lib/jenkins/workspace/devops-pipeline
+INFO: Working dir: /var/lib/jenkins/workspace/devops-pipeline/.scannerwork
+INFO: Load project settings for component key: 'test-node-js'
+INFO: Load project settings for component key: 'test-node-js' (done) | time=274ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load quality profiles
+INFO: Load quality profiles (done) | time=326ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load active rules
+INFO: Load active rules (done) | time=4307ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO: 110 files indexed
+INFO: 0 files ignored because of scm ignore settings
+INFO: Quality profile for java: Sonar way
+INFO: Quality profile for xml: Sonar way
+INFO: ------------- Run sensors on module test-node-js
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=174ms
+INFO: Sensor JavaSquidSensor [java]
+INFO: Configured Java source version (sonar.java.source): none
+INFO: JavaClasspath initialization
+INFO: JavaClasspath initialization (done) | time=18ms
+INFO: JavaTestClasspath initialization
+INFO: JavaTestClasspath initialization (done) | time=1ms
+INFO: Java Main Files AST scan
+INFO: 2 source files to be analyzed
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=215ms
+INFO: 2/2 source files have been analyzed
+WARN: Dependencies/libraries were not provided for analysis of SOURCE files. The 'sonar.java.libraries' property is empty. Verify your configuration, as you might end up with less precise results.
+WARN: Unresolved imports/types have been detected during analysis. Enable DEBUG mode to see them.
+INFO: Java Main Files AST scan (done) | time=1950ms
+INFO: Java Test Files AST scan
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Java Test Files AST scan (done) | time=2ms
+INFO: Java Generated Files AST scan
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Java Generated Files AST scan (done) | time=2ms
+INFO: Sensor JavaSquidSensor [java] (done) | time=2510ms
+INFO: Sensor CSS Rules [cssfamily]
+WARN: Property 'sonar.css.node' is ignored, 'sonar.nodejs.executable' should be used instead
+INFO: No CSS, PHP, HTML or VueJS files are found in the project. CSS analysis is skipped.
+INFO: Sensor CSS Rules [cssfamily] (done) | time=1ms
+INFO: Sensor JaCoCo XML Report Importer [jacoco]
+INFO: 'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+INFO: No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=10ms
+INFO: Sensor C# Project Type Information [csharp]
+INFO: Sensor C# Project Type Information [csharp] (done) | time=1ms
+INFO: Sensor C# Properties [csharp]
+INFO: Sensor C# Properties [csharp] (done) | time=4ms
+INFO: Sensor SurefireSensor [java]
+INFO: parsing [/var/lib/jenkins/workspace/devops-pipeline/target/surefire-reports]
+INFO: Sensor SurefireSensor [java] (done) | time=2ms
+INFO: Sensor JavaXmlSensor [java]
+INFO: 2 source files to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: Sensor JavaXmlSensor [java] (done) | time=287ms
+INFO: Sensor HTML [web]
+INFO: Sensor HTML [web] (done) | time=5ms
+INFO: Sensor XML Sensor [xml]
+INFO: 2 source files to be analyzed
+INFO: 2/2 source files have been analyzed
+INFO: Sensor XML Sensor [xml] (done) | time=182ms
+INFO: Sensor VB.NET Project Type Information [vbnet]
+INFO: Sensor VB.NET Project Type Information [vbnet] (done) | time=1ms
+INFO: Sensor VB.NET Properties [vbnet]
+INFO: Sensor VB.NET Properties [vbnet] (done) | time=1ms
+INFO: ------------- Run sensors on project
+INFO: Sensor Zero Coverage Sensor
+INFO: Sensor Zero Coverage Sensor (done) | time=15ms
+INFO: Sensor Java CPD Block Indexer
+INFO: Sensor Java CPD Block Indexer (done) | time=22ms
+INFO: SCM Publisher SCM provider for this project is: git
+INFO: SCM Publisher 1 source file to be analyzed
+INFO: SCM Publisher 0/1 source files have been analyzed (done) | time=57ms
+WARN: Missing blame information for the following files:
+WARN:   * target/dependency/META-INF/maven/org.test/my-test-app/pom.xml
+WARN: This may lead to missing/broken features in SonarQube
+INFO: CPD Executor Calculating CPD for 2 files
+INFO: CPD Executor CPD calculation finished (done) | time=7ms
+INFO: Analysis report generated in 147ms, dir size=109 KB
+INFO: Analysis report compressed in 37ms, zip size=21 KB
+INFO: Analysis report uploaded in 168ms
+INFO: ANALYSIS SUCCESSFUL, you can browse http://35.235.81.148:9000/dashboard?id=test-node-js
+INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+INFO: More about the report processing at http://35.235.81.148:9000/api/ce/task?id=AXnYHeCdj5N-6DNPe5fL
+INFO: Analysis total time: 11.437 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 13.038s
+INFO: Final Memory: 23M/278M
+INFO: ------------------------------------------------------------------------
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+Building the docker image for application..
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker build -t aishwaryadevops/app-image:169 .
+Sending build context to Docker daemon   32.7MB
+
+Step 1/4 : FROM openjdk:8
+ ---> eca41db787bd
+Step 2/4 : EXPOSE 8080
+ ---> Using cache
+ ---> bfeabfe7c84e
+Step 3/4 : ADD target/my-test-app-0.0.1-SNAPSHOT.jar my-test-app-0.0.1-SNAPSHOT.jar
+ ---> 76420ca551c3
+Step 4/4 : ENTRYPOINT ["java","-jar","/my-test-app-0.0.1-SNAPSHOT.jar"]
+ ---> Running in 2b204bcb441f
+Removing intermediate container 2b204bcb441f
+ ---> 744345c4dfc5
+Successfully built 744345c4dfc5
+Successfully tagged aishwaryadevops/app-image:169
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Docker image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+Pushing the docker image for application..
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+$ docker login -u aishwaryadevops -p ******** https://index.docker.io/v1/
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/workspace/devops-pipeline@tmp/aa73fc0f-6938-4dd1-99be-554e47a184c9/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] sh
++ docker tag aishwaryadevops/app-image:169 aishwaryadevops/app-image:169
+[Pipeline] isUnix
+[Pipeline] sh
++ docker push aishwaryadevops/app-image:169
+The push refers to repository [docker.io/aishwaryadevops/app-image]
+08b865441c5f: Preparing
+bd87f5884754: Preparing
+4a64f1e3a7a1: Preparing
+3fc095fab4a2: Preparing
+685934357c89: Preparing
+ccb9b68523fd: Preparing
+00bcea93703b: Preparing
+688e187d6c79: Preparing
+ccb9b68523fd: Waiting
+00bcea93703b: Waiting
+688e187d6c79: Waiting
+3fc095fab4a2: Layer already exists
+685934357c89: Layer already exists
+bd87f5884754: Layer already exists
+4a64f1e3a7a1: Layer already exists
+ccb9b68523fd: Layer already exists
+688e187d6c79: Layer already exists
+00bcea93703b: Layer already exists
+08b865441c5f: Pushed
+169: digest: sha256:7c86e3bcd5422a36ee99709e2919f67dea3f5723add5c1a64aa7f885a7152478 size: 2006
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (configure and deploy to another instance)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+configure and deploy the image to another instance..
+[Pipeline] ansiblePlaybook
+[devops-pipeline] $ ansible-playbook deploy-playbook.yml -i dev.inv --private-key /var/lib/jenkins/workspace/devops-pipeline/ssh9076386106838471456.key -u root -e tagname=169
+
+PLAY [DevOps Bootcamp] *********************************************************
+
+TASK [Update APT package manager repositories cache] ***************************
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.168.0.2 should use 
+/usr/bin/python3, but is using /usr/bin/python for backward compatibility with 
+prior Ansible releases. A future Ansible release will default to using the 
+discovered platform python for this host. See https://docs.ansible.com/ansible/
+2.9/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled 
+by setting deprecation_warnings=False in ansible.cfg.
+changed: [10.168.0.2]
+
+TASK [Install OpenJDK Java] ****************************************************
+ok: [10.168.0.2]
+
+TASK [Install Maven using Ansible] *********************************************
+ok: [10.168.0.2]
+
+TASK [Installs nginx web server] ***********************************************
+ok: [10.168.0.2]
+
+TASK [Install docker dependencies] *********************************************
+ok: [10.168.0.2] => (item=apt-transport-https)
+ok: [10.168.0.2] => (item=ca-certificates)
+ok: [10.168.0.2] => (item=curl)
+ok: [10.168.0.2] => (item=gnupg-agent)
+ok: [10.168.0.2] => (item=software-properties-common)
+
+TASK [add GPG key] *************************************************************
+ok: [10.168.0.2]
+
+TASK [add docker repository to apt] ********************************************
+ok: [10.168.0.2]
+
+TASK [install docker] **********************************************************
+ok: [10.168.0.2] => (item=docker-ce)
+ok: [10.168.0.2] => (item=docker-ce-cli)
+ok: [10.168.0.2] => (item=containerd.io)
+
+TASK [deploy wartest application] **********************************************
+[WARNING]: Consider using 'become', 'become_method', and 'become_user' rather
+than running sudo
+changed: [10.168.0.2]
+
+PLAY RECAP *********************************************************************
+10.168.0.2                 : ok=9    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Remove Unused docker image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker rmi aishwaryadevops/app-image:169
+Untagged: aishwaryadevops/app-image:169
+Untagged: aishwaryadevops/app-image@sha256:7c86e3bcd5422a36ee99709e2919f67dea3f5723add5c1a64aa7f885a7152478
+Deleted: sha256:744345c4dfc56965b3067a11d190273fb1ef6208cd75633165127bec6bdc2f5e
+Deleted: sha256:76420ca551c365e8b8d291fc642e81d783bbc88307fe63164c0f90914996d900
+Deleted: sha256:359da1e24c09676bb22ab9bfb1d547545efee9b031b19849388dca54acb3be4a
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] emailext
+Sending email to: aiwspace@gmail.com
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
